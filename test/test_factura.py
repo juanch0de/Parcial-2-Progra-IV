@@ -1,0 +1,46 @@
+import unittest
+from datetime import date
+from crud.factura_crud import crear_factura, actualizar_factura, eliminar_factura, mostrar_facturas
+
+class TestFacturaCRUD(unittest.TestCase):
+    def setUp(self):
+        from crud.factura_crud import facturas
+        global facturas
+        facturas = []
+
+    def test_crear_factura(self):
+        f = crear_factura(date(2025, 11, 4), 123)
+        self.assertEqual(f.id_cliente, 123)
+        self.assertEqual(f.fecha, date(2025, 11, 4))
+        self.assertIsNotNone(f.id_factura)
+        self.assertEqual(f.valor_total, 0)
+
+    def test_actualizar_factura(self):
+        f = crear_factura(date(2025, 11, 4), 123)
+        updated = actualizar_factura(f.id_factura, id_cliente=999)
+        self.assertTrue(updated)
+        self.assertEqual(f.id_cliente, 999)
+
+        updated = actualizar_factura(9999, id_cliente=111)
+        self.assertFalse(updated)
+
+    def test_eliminar_factura(self):
+        f = crear_factura(date(2025, 11, 4), 123)
+        deleted = eliminar_factura(f.id_factura)
+        self.assertTrue(deleted)
+        self.assertEqual(len(mostrar_facturas()), 0)
+
+        deleted = eliminar_factura(9999)
+        self.assertFalse(deleted)
+
+    def test_mostrar_facturas(self):
+        f1 = crear_factura(date(2025, 11, 4), 123)
+        f2 = crear_factura(date(2025, 11, 5), 456)
+        facturas_list = mostrar_facturas()
+        self.assertEqual(len(facturas_list), 2)
+        self.assertIn(f1, facturas_list)
+        self.assertIn(f2, facturas_list)
+
+if __name__ == "__main__":
+    unittest.main()
+

@@ -1,4 +1,5 @@
 from modelo.Factura import Factura
+from datetime import date
 
 facturas = []
 _id_factura = 1
