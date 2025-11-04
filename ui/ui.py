@@ -1,0 +1,98 @@
+from crud.cliente_crud import crear_cliente, actualizar_cliente, eliminar_cliente, mostrar_clientes
+from crud.factura_crud import crear_factura, actualizar_factura, eliminar_factura, mostrar_facturas
+from crud.producto_crud import crear_producto, actualizar_producto, eliminar_producto, mostrar_productos
+from datetime import date
+
+def ui_crear_cliente():
+    nombre = input("Nombre del cliente:")
+    ID = int(input("ID del cliente:"))
+    crear_cliente(nombre, ID)
+    print(f"Cliente {nombre} creado")
+
+def ui_mostrar_clientes():
+    clientes = mostrar_clientes()
+    for cliente in clientes:
+             print(f"Nombre: {cliente.nombre} - ID: {cliente.ID}")
+
+def ui_crear_producto():
+    tipo = input("Tipo de producto (fertilizante, plaguicida, antibiotico):").lower()
+    datos = {}
+
+    if tipo in ["fertilizante", "plaguicida"]:
+             datos["ICA"] = input("ICA:")
+             datos["nombre"] = input("Nombre:")
+             datos["frecuencia_aplicacion_dias"] = int(input("Frecuencia de aplicación en días:"))
+             datos["precio"] = int(input("Precio:"))
+
+             if tipo == "fertilizante":
+                fecha_ultima_aplicacion = input("Fecha ultima aplicacion (YYYY-MM-DD):")
+                datos["fecha_ultima_aplicacion"] = date.fromisoformat(fecha_ultima_aplicacion)
+             else:
+                datos["periodo_carencia_dias"] = int(input("Periodo carencia en días:"))
+
+    elif tipo == "antibiotico":
+             datos["nombre"] = input("Nombre:")
+             datos["dosisKG"] = int(input("Dosis por KG:"))
+             datos["animal"] = input("Animal:")
+             datos["precio"] = int(input("Precio:"))
+
+    else:
+             print("Tipo de producto incorrecto")
+             return
+
+    crear_producto(tipo, **datos)
+    print("Producto creado")
+
+def ui_mostrar_productos():
+    productos = mostrar_productos()
+    for producto in productos:
+             clave = getattr(producto, "ICA", getattr(producto,"nombre",  "N/A"))
+             tipo = type(producto).__name__
+             print(f"{tipo}: {clave} - {producto.nombre}, Precio: {producto.precio}")
+
+def ui_crear_factura():
+    id_cliente = int(input("ID del cliente: "))
+    fecha_input = input("Fecha (YYYY-MM-DD):")
+    fecha_factura = date.fromisoformat(fecha_input)
+    crear_factura(fecha_factura, id_cliente)
+    print("Factura creada.")
+
+def ui_mostrar_facturas():
+    facturas = mostrar_facturas()
+    for factura in facturas:
+        print(f"ID Factura: {factura.id_factura}, Cliente: {factura.id_cliente}, Fecha: {factura.fecha}, Valor Total: {factura.valor_total}")
+
+def menu():
+    while True:
+        print("\n---MENU---")
+        print("1. Crear cliente")
+        print("2. Mostrar clientes")
+        print("3. Crear producto")
+        print("4. Mostrar productos")
+        print("5. Crear factura")
+        print("6. Mostrar facturas")
+        print("7. Salir")
+
+        opcion = input("Seleccione una opción:")
+
+        if opcion == "1":
+            ui_crear_cliente()
+        elif opcion == "2":
+            ui_mostrar_clientes()
+        elif opcion == "3":
+            ui_crear_producto()
+        elif opcion == "4":
+            ui_mostrar_productos()
+        elif opcion == "5":
+            ui_crear_factura()
+        elif opcion == "6":
+            ui_mostrar_facturas()
+        elif opcion == "7":
+            break
+
+        else:
+            print("Opción incorrecta")
+
+if __name__ == "__main__":
+    menu()
+    

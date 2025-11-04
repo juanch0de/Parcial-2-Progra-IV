@@ -1,0 +1,64 @@
+from modelo.ProductoControl import ProductoControl
+from modelo.Fertilizante import Fertilizante
+from modelo.Plaguicida import Plaguicida
+from modelo.Antibiotico import Antibiotico
+
+productos = []
+
+def crear_producto(tipo: str, **datos) -> ProductoControl:
+    tipo = tipo.lower()
+
+    campos_producto_control  = ["ICA", "nombre", "frecuencia_aplicacion_dias", "precio"]
+    campos_antibiotico = ["nombre", "dosisKG", "animal", "precio"]
+
+    if tipo == "fertilizante":
+        if "fecha_ultima_aplicacion_dias" not in datos:
+            raise ValueError("Falta 'Fecha Última Aplicación' para fertilizante")
+        producto = Fertilizante(
+                **{atributo: datos[atributo] for atributo in campos_producto_control},
+                fecha_ultima_aplicacion_dias = datos["fecha_ultima_aplicacion_dias"]
+                )
+
+    elif tipo == "plaguicida":
+        if "periodo_carencia_dias" not in datos:
+            raise ValueError("Falta 'Periodo Carencia Días' para plaguicida")
+        producto = Plaguicida(
+                **{atributo:datos[atributo] for atributo in campos_producto_control},
+                periodo_carencia_dias = datos["periodo_carencia_dias"]
+                )
+
+    elif tipo == "antibiotico":
+       producto = Antibiotico(
+               **{atributo:datos[atributo] for atributo in campos_antibiotico}
+               )
+
+    else: 
+        raise ValueError("Tipo de producto no válido")
+
+    productos.append(producto)
+    return producto
+
+
+def actualizar_producto(identificador: str, **datos) -> bool:
+    for producto in productos:
+        clave = producto.ICA if hasattr(producto, "ICA") else producto.nombre
+
+        if clave == identificador:
+            for atributo, valor in datos.items():
+                if hasattr(producto, atributo):
+                    setattr(producto, atributo, valor)
+            return True
+    return False
+
+def eliminar_producto(identificador: str) -> bool:
+    global productos
+
+    for producto in productos:
+        clave = producto.ICA if hasattr(producto, "ICA") else producto.nombre
+        if clave == identificador:
+            productos.remove(producto)
+            return True
+    return False
+
+def mostrar_productos() -> list:
+    return productos
