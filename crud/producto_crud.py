@@ -12,11 +12,11 @@ def crear_producto(tipo: str, **datos) -> ProductoControl:
     campos_antibiotico = ["nombre", "dosisKG", "animal", "precio"]
 
     if tipo == "fertilizante":
-        if "fecha_ultima_aplicacion_dias" not in datos:
+        if "fecha_ultima_aplicacion" not in datos:
             raise ValueError("Falta 'Fecha Última Aplicación' para fertilizante")
         producto = Fertilizante(
                 **{atributo: datos[atributo] for atributo in campos_producto_control},
-                fecha_ultima_aplicacion_dias = datos["fecha_ultima_aplicacion_dias"]
+                fecha_ultima_aplicacion = datos["fecha_ultima_aplicacion"]
                 )
 
     elif tipo == "plaguicida":

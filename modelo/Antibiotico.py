@@ -1,4 +1,4 @@
-from ProductoControl import ProductoControl
+from modelo.ProductoControl import ProductoControl
 
 class Antibiotico():
     def __init__(self, nombre: str, dosisKG: int, animal: str, precio: int):

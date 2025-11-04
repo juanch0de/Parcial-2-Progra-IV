@@ -1,12 +1,14 @@
 import unittest
-from crud.producto_crud import crear_producto, actualizar_productos, eliminar_productos, mostrar_productos
+from crud.producto_crud import crear_producto, actualizar_producto, eliminar_producto, mostrar_productos
 from modelo.Fertilizante import Fertilizante
 from modelo.Plaguicida import Plaguicida
 from modelo.Antibiotico import Antibiotico
+from modelo.ProductoControl import ProductoControl
 from datetime import date
 
 class TestProductoCRUD(unittest.TestCase):
     def setUp(self):
+        from crud.producto_crud import productos
         global productos
         productos.clear()
 
@@ -59,7 +61,7 @@ class TestProductoCRUD(unittest.TestCase):
             precio=60,
             fecha_ultima_aplicacion=date(2025, 11, 4)
         )
-        updated = actualizar_productos("F002", nombre="Ferti2Actualizado", precio=65)
+        updated = actualizar_producto("F002", nombre="Ferti2Actualizado", precio=65)
         self.assertTrue(updated)
         self.assertEqual(f.nombre, "Ferti2Actualizado")
         self.assertEqual(f.precio, 65)
@@ -73,9 +75,9 @@ class TestProductoCRUD(unittest.TestCase):
             precio=60,
             fecha_ultima_aplicacion=date(2025, 11, 4)
         )
-        deleted = eliminar_productos("F003")
+        deleted = eliminar_producto("F003")
         self.assertTrue(deleted)
-        self.assertEqual(len(mostrar_productos()), 0)
+        self.assertEqual(len(mostrar_producto()), 0)
 
     def test_mostrar_productos(self):
         crear_producto(
