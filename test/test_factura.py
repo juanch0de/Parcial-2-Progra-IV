@@ -1,12 +1,11 @@
 import unittest
 from datetime import date
 from crud.factura_crud import crear_factura, actualizar_factura, eliminar_factura, mostrar_facturas
+import crud.factura_crud as factura_crud
 
 class TestFacturaCRUD(unittest.TestCase):
     def setUp(self):
-        from crud.factura_crud import facturas
-        global facturas
-        facturas = []
+        factura_crud.facturas.clear()
 
     def test_crear_factura(self):
         f = crear_factura(date(2025, 11, 4), 123)

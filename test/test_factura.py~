@@ -1,13 +1,11 @@
 import unittest
 from datetime import date
 from crud.factura_crud import crear_factura, actualizar_factura, eliminar_factura, mostrar_facturas
+import crud.factura_crud as factura_crud
 
 class TestFacturaCRUD(unittest.TestCase):
     def setUp(self):
-        # Clear facturas list before each test
-        from crud.factura_crud import facturas
         global facturas
-        facturas = []
 
     def test_crear_factura(self):
         f = crear_factura(date(2025, 11, 4), 123)
@@ -22,7 +20,6 @@ class TestFacturaCRUD(unittest.TestCase):
         self.assertTrue(updated)
         self.assertEqual(f.id_cliente, 999)
 
-        # Try updating non-existent factura
         updated = actualizar_factura(9999, id_cliente=111)
         self.assertFalse(updated)
 
@@ -32,7 +29,6 @@ class TestFacturaCRUD(unittest.TestCase):
         self.assertTrue(deleted)
         self.assertEqual(len(mostrar_facturas()), 0)
 
-        # Try deleting non-existent factura
         deleted = eliminar_factura(9999)
         self.assertFalse(deleted)
 
