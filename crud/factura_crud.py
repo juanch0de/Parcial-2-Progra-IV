@@ -1,4 +1,4 @@
-from modelo.Factura import Factura
+from model.Factura import Factura
 from datetime import date
 
 facturas = []

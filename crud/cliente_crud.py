@@ -1,4 +1,4 @@
-from modelo.Cliente import Cliente
+from model.Cliente import Cliente
 
 clientes = []
 

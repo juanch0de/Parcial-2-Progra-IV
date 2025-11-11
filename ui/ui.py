@@ -2,17 +2,28 @@ from crud.cliente_crud import crear_cliente, actualizar_cliente, eliminar_client
 from crud.factura_crud import crear_factura, actualizar_factura, eliminar_factura, mostrar_facturas
 from crud.producto_crud import crear_producto, actualizar_producto, eliminar_producto, mostrar_productos
 from datetime import date
+import os
+import subprocess
+
+def limpiar_pantalla():
+    if os.name == "posix":
+        subprocess.run(["clear"])
+    else:
+        subprocess.run(["cls"], shell = True)
 
 def ui_crear_cliente():
     nombre = input("Nombre del cliente:")
     ID = int(input("ID del cliente:"))
     crear_cliente(nombre, ID)
     print(f"Cliente {nombre} creado")
+    input("\nPresione enter para continuar")
 
 def ui_mostrar_clientes():
     clientes = mostrar_clientes()
     for cliente in clientes:
              print(f"Nombre: {cliente.nombre} - ID: {cliente.ID}")
+    input("\nPresione enter para continuar")
+
 
 def ui_crear_producto():
     tipo = input("Tipo de producto (fertilizante, plaguicida, antibiotico):").lower()
@@ -40,8 +51,17 @@ def ui_crear_producto():
              print("Tipo de producto incorrecto")
              return
 
-    crear_producto(tipo, **datos)
-    print("Producto creado")
+    try:
+        crear_producto(tipo, **datos)
+        print("Producto creado")
+        input("\nPresione enter para continuar")
+
+    except ValueError as exemption:
+        print(f"{exemption}")
+        input("\nPresione enter para continuar")
+        return
+
+
 
 def ui_mostrar_productos():
     productos = mostrar_productos()
@@ -49,6 +69,8 @@ def ui_mostrar_productos():
              clave = getattr(producto, "ICA", getattr(producto,"nombre",  "N/A"))
              tipo = type(producto).__name__
              print(f"{tipo}: {clave} - {producto.nombre}, Precio: {producto.precio}")
+    input("\nPresione enter para continuar")
+
 
 def ui_crear_factura():
     id_cliente = int(input("ID del cliente: "))
@@ -56,14 +78,18 @@ def ui_crear_factura():
     fecha_factura = date.fromisoformat(fecha_input)
     crear_factura(fecha_factura, id_cliente)
     print("Factura creada.")
+    input("\nPresione enter para continuar")
+
 
 def ui_mostrar_facturas():
     facturas = mostrar_facturas()
     for factura in facturas:
         print(f"ID Factura: {factura.id_factura}, Cliente: {factura.id_cliente}, Fecha: {factura.fecha}, Valor Total: {factura.valor_total}")
+    input("\nPresione enter para continuar")
 
 def menu():
     while True:
+        limpiar_pantalla()
         print("\n---MENU---")
         print("1. Crear cliente")
         print("2. Mostrar clientes")

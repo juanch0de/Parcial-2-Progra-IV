@@ -1,9 +1,9 @@
 import unittest
 from crud.producto_crud import crear_producto, actualizar_producto, eliminar_producto, mostrar_productos
-from modelo.Fertilizante import Fertilizante
-from modelo.Plaguicida import Plaguicida
-from modelo.Antibiotico import Antibiotico
-from modelo.ProductoControl import ProductoControl
+from model.Fertilizante import Fertilizante
+from model.Plaguicida import Plaguicida
+from model.Antibiotico import Antibiotico
+from model.ProductoControl import ProductoControl
 from datetime import date
 
 class TestProductoCRUD(unittest.TestCase):
@@ -39,7 +39,7 @@ class TestProductoCRUD(unittest.TestCase):
         self.assertEqual(p.ICA, "P001")
         self.assertEqual(p.periodo_carencia_dias, 5)
 
-    def test_crear_antibiotico(self):
+    def test_crear_antibiotico_incorrecto1(self):
         a = crear_producto(
             "antibiotico",
             nombre="Anti1",
@@ -51,6 +51,29 @@ class TestProductoCRUD(unittest.TestCase):
         self.assertEqual(a.nombre, "Anti1")
         self.assertEqual(a.dosisKG, 2)
         self.assertEqual(a.animal, "Vaca")
+
+    def test_crear_antibiotico_incorrecto2(self):
+        ant = crear_producto(
+                "antibiotico",
+                nombre = "Fenefexamina",
+                dosisKG = 2,
+                animal = "bovino",
+                precio = 50000
+                )
+        self.assertIsInstance(ant, Antibiotico)
+        self.assertEqual(ant.dosisKG,2)
+
+    def test_crear_antibiotico_correcto(self):
+        antib = crear_producto(
+                "antibiotico",
+                nombre = "Antibiotico1",
+                dosisKG = 400,
+                animal = "bOvInO",
+                precio = 40000
+            )
+        
+        self.assertIsInstance(antib, Antibiotico)
+        self.assertEqual(antib.animal, "bovino")
 
     def test_actualizar_producto(self):
         f = crear_producto(
@@ -91,13 +114,13 @@ class TestProductoCRUD(unittest.TestCase):
         crear_producto(
             "antibiotico",
             nombre="Anti2",
-            dosisKG=3,
-            animal="Oveja",
+            dosisKG=533,
+            animal="caprino",
             precio=90
         )
         productos_list = mostrar_productos()
         self.assertEqual(len(productos_list), 2)
-        tipos = [type(p).__name__ for p in productos_list]
+        tipos = {type(p).__name__ for p in productos_list}
         self.assertIn("Fertilizante", tipos)
         self.assertIn("Antibiotico", tipos)
 

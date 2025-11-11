@@ -1,4 +1,4 @@
-from ProductoControl import ProductoControl
+from model.ProductoControl import ProductoControl
 
 class Plaguicida(ProductoControl):
     def __init__(self, ICA: str, nombre: str, frecuencia_aplicacion_dias: int, precio: int, periodo_carencia_dias: int):

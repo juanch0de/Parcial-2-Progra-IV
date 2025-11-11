@@ -1,4 +1,4 @@
-from ProductoControl import ProductoControl
+from model.ProductoControl import ProductoControl
 from datetime import date 
 
 class Fertilizante(ProductoControl):

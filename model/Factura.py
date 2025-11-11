@@ -1,5 +1,5 @@
-from ProductoControl import ProductoControl 
-from Antibiotico import Antibiotico
+from model.ProductoControl import ProductoControl 
+from model.Antibiotico import Antibiotico
 from datetime import date
 
 class Factura():

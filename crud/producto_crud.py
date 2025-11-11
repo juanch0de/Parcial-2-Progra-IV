@@ -1,7 +1,7 @@
-from modelo.ProductoControl import ProductoControl
-from modelo.Fertilizante import Fertilizante
-from modelo.Plaguicida import Plaguicida
-from modelo.Antibiotico import Antibiotico
+from model.ProductoControl import ProductoControl
+from model.Fertilizante import Fertilizante
+from model.Plaguicida import Plaguicida
+from model.Antibiotico import Antibiotico
 
 productos = []
 
